@@ -16,7 +16,7 @@ if [ $? -eq 0 ]; then
     # 3. Open the Firewall (Requires sudo)
     echo "[NETWORK] Ensuring ports 8080 and 8082 are open..."
     sudo ufw allow 8080/tcp
-    sudo ufw allow 8082/tcp
+    sudo ufw allow 8000/tcp
     
     # 4. Run the Main Server
     # Note: We use -cp bin to tell Java where the compiled classes are
