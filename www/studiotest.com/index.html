@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Portfolio</title>
+    <style>
+        /* BASE STYLES */
+        body { 
+            font-family: 'Helvetica Neue', Helvetica, sans-serif; 
+            background: #111; 
+            color: #fff; 
+            margin: 0; 
+            padding: 40px 5%; /* Changed to percentage for better responsiveness */
+        }
+        
+        header { 
+            text-align: center; 
+            margin-bottom: 40px; 
+        }
+        
+        h1 { 
+            letter-spacing: 5px; 
+            text-transform: uppercase; 
+            font-weight: 300; 
+            margin-bottom: 5px;
+        }
+        
+        p {
+            color: #888;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        /* FILTER BUTTONS */
+        .filters {
+            text-align: center;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-btn {
+            background: transparent;
+            color: #888;
+            border: 1px solid #444;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #fff;
+            color: #111;
+            border-color: #fff;
+        }
+
+        /* GALLERY GRID */
+        .gallery { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+            grid-auto-rows: 250px; 
+            gap: 15px; 
+            transition: all 0.3s ease;
+        }
+        
+        .item { 
+            background: #222; 
+            border-radius: 5px; 
+            overflow: hidden; /* Keeps images inside the rounded corners */
+            position: relative;
+            cursor: pointer; 
+            transition: transform 0.3s ease, opacity 0.4s ease; 
+        }
+
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures images fill the box without stretching */
+            transition: transform 0.5s ease;
+        }
+        
+        .item:hover img { 
+            transform: scale(1.05); /* Slight zoom effect on hover */
+        }
+        
+        /* Grid Spans */
+        .tall { grid-row: span 2; }
+        .wide { grid-column: span 2; }
+
+        /* Hide class for filtering */
+        .hide {
+            display: none;
+        }
+
+        /* LIGHTBOX / MODAL */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 5px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #aaa;
+        }
+
+        /* Responsive Tweaks */
+        @media (max-width: 600px) {
+            .wide { grid-column: span 1; } /* Disable wide spans on small mobile screens */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Creative Studio</h1>
+        <p>Visual Explorations</p>
+    </header>
+
+    <div class="filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="design">Design</button>
+        <button class="filter-btn" data-filter="photo">Photography</button>
+        <button class="filter-btn" data-filter="3d">3D Art</button>
+    </div>
+
+    <div class="gallery">
+        <div class="item" data-category="photo">
+            <img src="https://picsum.photos/id/1015/600/600" alt="Landscape">
+        </div>
+        <div class="item tall" data-category="design">
+            <img src="https://picsum.photos/id/1025/600/1200" alt="Dog">
+        </div>
+        <div class="item" data-category="3d">
+            <img src="https://picsum.photos/id/1043/600/600" alt="Abstract">
+        </div>
+        <div class="item wide" data-category="photo">
+            <img src="https://picsum.photos/id/1044/1200/600" alt="Nature">
+        </div>
+        <div class="item" data-category="design">
+            <img src="https://picsum.photos/id/1050/600/600" alt="Architecture">
+        </div>
+        <div class="item tall" data-category="3d">
+            <img src="https://picsum.photos/id/1067/600/1200" alt="Cityscape">
+        </div>
+        <div class="item" data-category="photo">
+            <img src="https://picsum.photos/id/1074/600/600" alt="Lions">
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        // --- FILTERING LOGIC ---
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                galleryItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.classList.remove('hide');
+                    } else {
+                        item.classList.add('hide');
+                    }
+                });
+            });
+        });
+
+        // --- LIGHTBOX (MODAL) LOGIC ---
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeBtn = document.querySelector('.close-btn');
+
+        // Open Modal
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const imgSrc = item.querySelector('img').src;
+                modalImg.src = imgSrc;
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+            });
+        });
+
+        // Close Modal via close button
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        });
+
+        // Close Modal by clicking outside the image
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rahul | Engineering Studio</title>
+    <style>
+        /* --- Premium Dark Theme --- */
+        :root {
+            --bg-base: #050505;
+            --bg-surface: #111111;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --accent: #ffffff;
+            --glass-bg: rgba(17, 17, 17, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Glassmorphism Header --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
+            background: radial-gradient(circle at center, #1a1a1a 0%, var(--bg-base) 100%);
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 300;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            font-weight: 300;
+        }
+
+        /* --- Masonry Grid Section --- */
+        .portfolio-section {
+            padding: 100px 5%;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            display: block;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-auto-rows: 350px;
+            gap: 20px;
+        }
+
+        /* Grid Items (Cards) */
+        .grid-item {
+            position: relative;
+            background: var(--bg-surface);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid var(--glass-border);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+            opacity: 0.6; /* Slightly dim the image by default */
+        }
+
+        .grid-item:hover img {
+            transform: scale(1.05);
+            opacity: 1; /* Brighten on hover */
+        }
+
+        /* Overlay Text on Cards */
+        .item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .grid-item:hover .item-overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .item-overlay h3 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .item-overlay p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        /* Span classes for dynamic sizing */
+        .span-tall { grid-row: span 2; }
+        .span-wide { grid-column: span 2; }
+
+        /* --- Footer --- */
+        footer {
+            padding: 60px 5%;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* --- Mobile Responsive --- */
+        @media (max-width: 768px) {
+            .span-wide { grid-column: span 1; }
+            nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">Rahul.</a>
+        <nav>
+            <a href="#work">Work</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Engineering<br>Meets Art.</h1>
+        <p>I build high-performance systems in C/C++ and design elegant digital experiences. Bare metal logic, beautiful execution.</p>
+    </section>
+
+    <section id="work" class="portfolio-section">
+        <span class="section-title">Selected Projects</span>
+        
+        <div class="grid">
+            <div class="grid-item span-tall">
+                <img src="https://images.unsplash.com/photo-1550439062-609e1531270e?q=80&w=800&auto=format&fit=crop" alt="Server Room">
+                <div class="item-overlay">
+                    <h3>Custom HTTP Server</h3>
+                    <p>Java / Sockets / Threads</p>
+                </div>
+            </div>
+
+            <div class="grid-item">
+                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop" alt="Code Matrix">
+                <div class="item-overlay">
+                    <h3>CLI Data Analyzer</h3>
+                    <p>C++ / Memory Management</p>
+                </div>
+            </div>
+
+            <div class="grid-item">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop" alt="Circuit Board">
+                <div class="item-overlay">
+                    <h3>CPU Scheduler Sim</h3>
+                    <p>C / OS Architecture</p>
+                </div>
+            </div>
+
+            <div class="grid-item span-wide">
+                <img src="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=1200&auto=format&fit=crop" alt="Abstract Tech">
+                <div class="item-overlay">
+                    <h3>Network Proxy Router</h3>
+                    <p>Virtual Hosts / HTTP Protocols</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Designed and built by Rahul. Hosted on a custom Java Server.</p>
+    </footer>
+
+</body>
+</html>
