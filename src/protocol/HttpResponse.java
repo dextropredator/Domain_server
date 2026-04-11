@@ -8,21 +8,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.charset.StandardCharsets;
 
-/**
- * Utility class for building and sending HTTP responses.
- */
+
 public class HttpResponse {
     private static final String CRLF = "\r\n";
 
     public static void sendFile(OutputStream out, Path filePath) {
-        // Use a wrapper but DON'T use try-with-resources here on 'out' 
-        // unless you want the socket to close immediately every time.
+     
         BufferedOutputStream bout = new BufferedOutputStream(out);
         try {
             String contentType = MimeTypes.getMimeType(filePath);
             long contentLength = Files.size(filePath);
 
-            // Write status and headers
+       
             StringBuilder headers = new StringBuilder();
             headers.append("HTTP/1.1 200 OK").append(CRLF);
             headers.append("Content-Type: ").append(contentType).append(CRLF);
@@ -33,7 +30,7 @@ public class HttpResponse {
             bout.write(headers.toString().getBytes(StandardCharsets.UTF_8));
             bout.flush();
 
-            // Stream file bytes
+         
             try (InputStream fis = Files.newInputStream(filePath);
                  BufferedInputStream bis = new BufferedInputStream(fis)) {
                 byte[] buffer = new byte[8192];
@@ -44,7 +41,7 @@ public class HttpResponse {
                     totalSent += read;
                 }
                 bout.flush();
-                // Match the method name from our Logger class
+             
                 Logger.addBytesSent(totalSent); 
             }
         } catch (IOException e) {

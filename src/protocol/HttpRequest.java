@@ -8,10 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Simple HTTP request parser that reads request line and headers.
- * Only supports parsing the start-line and headers (sufficient for GET static serving).
- */
+
 public class HttpRequest {
     private final String method;
     private final String path;
@@ -28,7 +25,7 @@ public class HttpRequest {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
 
-            // Read request line
+          
             String startLine = reader.readLine();
             if (startLine == null || startLine.trim().isEmpty()) {
                 return null;
@@ -43,7 +40,7 @@ public class HttpRequest {
 
             HttpRequest req = new HttpRequest(method, path, version);
 
-            // Read headers until blank line
+           
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty()) break;

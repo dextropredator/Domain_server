@@ -7,7 +7,7 @@ public class HttpRequest {
     private String method;
     private String uri;
     private String version;
-    private String clientIp; // <-- NEW: Variable to hold the IP
+    private String clientIp; 
     private Map<String, String> headers = new HashMap<>();
 
     public String getMethod() { return method; }
@@ -19,7 +19,7 @@ public class HttpRequest {
     public String getVersion() { return version; }
     public void setVersion(String version) { this.version = version; }
 
-    // <-- NEW: Getter and Setter for the IP -->
+   
     public String getClientIp() { return clientIp; }
     public void setClientIp(String clientIp) { this.clientIp = clientIp; }
 

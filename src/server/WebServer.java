@@ -75,9 +75,7 @@ public class WebServer {
         threadPool.shutdownNow();
     }
 
-    /**
-     * Heuristic to find a local non-loopback IPv4 address for LAN access printing.
-     */
+    
     private String findLocalNonLoopbackIPv4() {
         try {
             for (NetworkInterface iface : java.util.Collections.list(NetworkInterface.getNetworkInterfaces())) {

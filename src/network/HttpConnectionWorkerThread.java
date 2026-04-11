@@ -23,7 +23,7 @@ public class HttpConnectionWorkerThread extends Thread {
             HttpRequest request = HttpRequestParser.parse(in);
 
             if (request != null) {
-                // <-- NEW: Grab the IP from the socket and save it to the request! -->
+                
                 String ipAddress = socket.getInetAddress().getHostAddress();
                 request.setClientIp(ipAddress);
 

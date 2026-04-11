@@ -3,34 +3,27 @@ package utils;
 import java.io.IOException;
 import java.nio.file.*;
 
-/**
- * FileLoader: safe file resolution within a www root. Prevents directory traversal attacks.
- */
+
 public class FileLoader {
     private static Path rootPath = null;
 
-    /**
-     * Resolves a requested path (like "/index.html" or "/css/site.css") to a safe file path under wwwRoot.
-     * Returns null if the file does not exist or path is invalid.
-     */
+    
     public static Path resolveFile(String wwwRoot, String requestPath) {
         try {
             if (rootPath == null) {
                 rootPath = Paths.get(wwwRoot).toAbsolutePath().normalize();
             }
-            // Reject obvious bad inputs
             if (requestPath == null || requestPath.contains("\0")) return null;
 
-            // Remove query string if any
+            
             int q = requestPath.indexOf('?');
             if (q >= 0) requestPath = requestPath.substring(0, q);
 
-            // Ensure leading slash
             if (!requestPath.startsWith("/")) requestPath = "/" + requestPath;
 
             Path resolved = rootPath.resolve(requestPath.substring(1)).normalize();
 
-            // Prevent directory traversal - resolved must start with rootPath
+            
             if (!resolved.startsWith(rootPath)) {
                 Logger.warning("Blocked directory traversal attempt: " + requestPath);
                 return null;

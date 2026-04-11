@@ -24,7 +24,7 @@ public class HttpRequestParser {
             request.setVersion(parts[2]);
         }
 
-        // Parse headers
+       
         String headerLine;
         while ((headerLine = reader.readLine()) != null && !headerLine.isEmpty()) {
             int colonIndex = headerLine.indexOf(":");

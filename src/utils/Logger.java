@@ -6,10 +6,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- * Simple logging utility: prints to console and optionally appends to server.log
- * Also tracks simple statistics.
- */
+
 public class Logger {
     private static final DateTimeFormatter TIMESTAMP = DateTimeFormatter.ISO_INSTANT.withZone(ZoneOffset.UTC);
     private static BufferedWriter fileWriter = null;
@@ -84,7 +81,6 @@ public class Logger {
         }
     }
 
-    // ... (previous code)
 
     public static void addBytesSent(long bytes) {
         totalBytesSent.addAndGet(bytes);
